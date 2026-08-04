@@ -28,6 +28,11 @@ test("publishes the exact complete-record projection", () => {
   assert.equal(data.listings.length, 573);
   assert.equal(data.posts.reduce((sum, post) => sum + post.media.length, 0), 2307);
   assert.equal(data.venues.filter((venue) => venue.coordinateStatus === "valid").length, 232);
+  const postIds = new Set(data.posts.map((post) => post.id));
+  const venueIds = new Set(data.venues.map((venue) => venue.id));
+  assert.equal(data.listings.every((listing) => postIds.has(listing.postId)), true);
+  assert.equal(data.listings.every((listing) => venueIds.has(listing.venueId)), true);
+  assert.equal(data.listings.every((listing) => /^https:\/\/www\.instagram\.com\/(?:p|reel)\//.test(listing.sourceUrl)), true);
 });
 
 test("contains every approved route but no private evidence fields", () => {
