@@ -1,0 +1,10 @@
+{
+  "schema_version": "aperitivi-publication-authorization-v1",
+  "status": "authorized",
+  "scope": "all-media-from-complete-records",
+  "complete_posts": 573,
+  "media_count": 2307,
+  "excluded_incomplete_records": 42,
+  "hosting": "cloudflare-pages",
+  "source_visibility": "public"
+}
