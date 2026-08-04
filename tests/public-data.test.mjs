@@ -36,11 +36,39 @@ test("publishes the exact complete-record projection", () => {
 });
 
 test("contains every approved route but no private evidence fields", () => {
+  const routes = new Set();
+  const postDirectories = new Set();
+  let jpegCount = 0;
+  let mp4Count = 0;
   for (const post of data.posts) {
+    const shortcodeMatch = post.sourceUrl.match(/^https:\/\/www\.instagram\.com\/(?:p|reel)\/([A-Za-z0-9_-]+)\/$/u);
+    assert.ok(shortcodeMatch);
+    const postDirectory = shortcodeMatch[1];
+    assert.equal(postDirectories.has(postDirectory), false);
+    postDirectories.add(postDirectory);
+    assert.ok(post.media.length > 0);
     for (const media of post.media) {
       assert.match(media.publicPath, /^\/media\/[A-Za-z0-9_-]+\/[A-Za-z0-9_.-]+$/);
+      assert.doesNotMatch(media.publicPath, /\.\.|\\/u);
+      assert.equal(media.publicPath.split("/")[2], postDirectory);
+      assert.equal(routes.has(media.publicPath), false);
+      routes.add(media.publicPath);
+      if (media.mediaType === "IMAGE") {
+        assert.equal(media.contentType, "image/jpeg");
+        assert.match(media.publicPath, /\.jpe?g$/iu);
+        jpegCount += 1;
+      } else {
+        assert.equal(media.mediaType, "VIDEO");
+        assert.equal(media.contentType, "video/mp4");
+        assert.match(media.publicPath, /\.mp4$/iu);
+        mp4Count += 1;
+      }
     }
   }
+  assert.equal(postDirectories.size, 573);
+  assert.equal(routes.size, 2307);
+  assert.equal(jpegCount, 2069);
+  assert.equal(mp4Count, 238);
   const keys = collectKeys(data).join("\n");
   for (const forbiddenKey of [
     /comment/i,
