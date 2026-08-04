@@ -7,7 +7,7 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
+    "dev": "vite",
     "build": "tsc -b && vite build",
     "typecheck": "tsc -b --pretty false",
     "data:sanitize": "node scripts/sanitize-catalog.mjs --output src/data/catalog.json",
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "6.0.2",
-    "vite": "8.0.13",
+    "vite": "8.2.0",
     "react": "19.2.6",
     "react-dom": "19.2.6"
   },
@@ -27,6 +27,9 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "typescript": "5.9.3",
-    "wrangler": "4.92.0"
+    "wrangler": "4.118.0"
+  },
+  "overrides": {
+    "undici": "7.29.0"
   }
 }
