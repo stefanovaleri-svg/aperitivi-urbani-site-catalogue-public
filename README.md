@@ -28,7 +28,8 @@ npm install
 npm test
 ```
 
-The dev server binds to `0.0.0.0` for LAN preview.
+The ordinary `npm run dev` server binds to localhost by default. LAN preview
+requires explicit temporary opt-in on a trusted network.
 
 ## Cloudflare Pages direct upload
 
