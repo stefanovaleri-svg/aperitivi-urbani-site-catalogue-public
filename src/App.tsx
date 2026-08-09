@@ -145,11 +145,11 @@ export function App() {
 
       <section className="method" id="metodo">
         <p className="eyebrow">Copertura trasparente</p>
-        <h2>573 record completi.<br />Nessuna falsa completezza.</h2>
+        <h2>588 record completi.<br />Nessuna falsa completezza.</h2>
         <div className="method-grid">
           <p><strong>615</strong> post tentati, senza elementi lasciati non tentati.</p>
-          <p><strong>42</strong> record incompleti non alimentano questa guida.</p>
-          <p><strong>2.307</strong> foto e video dei record completi, tutti inclusi.</p>
+          <p><strong>27</strong> record incompleti non alimentano questa guida.</p>
+          <p><strong>2.366</strong> foto e video dei record completi, tutti inclusi.</p>
         </div>
       </section>
 

@@ -1,8 +1,8 @@
 # Aperitivi Urbani — opzione catalogo
 
 Public, card-first guide built from the operator-approved Aperitivi Urbani
-snapshot. It includes 573 complete posts, 327 venue groups, and every one of
-the 2,307 contract-approved media assets. The 42 incomplete records are
+snapshot. It includes 588 complete posts, 289 venue groups, and every one of
+the 2,366 contract-approved media assets. The 27 incomplete records are
 excluded from the interface.
 
 Live site: https://aperitivi-urbani-catalogo.pages.dev
@@ -40,6 +40,12 @@ same-volume hardlinks from the verified media allowlist, then deploy:
 npm run pages:prepare -- --media-root <path-to-verified-public-media>
 npm run pages:deploy
 ```
+
+The deployment allowlist includes one approved publication-only derivative
+for a source video above the hosting limit. It preserves the exact public
+route, while the canonical accepted-release original remains unchanged. The
+same route, signature, per-file-size, hardlink, and exact-total checks apply to
+the complete deployment set.
 
 The Pages project is `aperitivi-urbani-catalogo`. No database or persistence
 binding is used.
