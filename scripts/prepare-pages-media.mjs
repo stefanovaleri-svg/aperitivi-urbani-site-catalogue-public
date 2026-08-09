@@ -7,11 +7,11 @@ const catalogPath = path.join(repoRoot, "src", "data", "catalog.json");
 const distRoot = path.join(repoRoot, "dist");
 const distMediaRoot = path.join(distRoot, "media");
 const MAX_PAGES_FILE_BYTES = 25 * 1024 * 1024;
-const EXPECTED_POSTS = 573;
-const EXPECTED_MEDIA = 2307;
-const EXPECTED_JPEGS = 2069;
-const EXPECTED_MP4S = 238;
-const EXPECTED_MEDIA_BYTES = 2_085_040_796;
+const EXPECTED_POSTS = 588;
+const EXPECTED_MEDIA = 2366;
+const EXPECTED_JPEGS = 2124;
+const EXPECTED_MP4S = 242;
+const EXPECTED_MEDIA_BYTES = 2_151_166_136;
 
 function argument(name) {
   const index = process.argv.indexOf(name);
@@ -65,7 +65,7 @@ assert(!isSameOrDescendant(distMediaRoot, sourceRoot), "Media source overlaps th
 
 const catalog = JSON.parse(fs.readFileSync(catalogPath, "utf8"));
 assert(catalog?.coverage?.completePosts === EXPECTED_POSTS, "Public projection complete-post count changed");
-assert(Array.isArray(catalog.posts) && catalog.posts.length === EXPECTED_POSTS, "Public projection does not contain exactly 573 complete posts");
+assert(Array.isArray(catalog.posts) && catalog.posts.length === EXPECTED_POSTS, `Public projection does not contain exactly ${EXPECTED_POSTS} complete posts`);
 
 const media = [];
 const postDirectories = new Set();
@@ -97,7 +97,7 @@ for (const post of catalog.posts) {
 }
 
 assert(postDirectories.size === EXPECTED_POSTS, "Expected one public media directory per complete post");
-assert(media.length === EXPECTED_MEDIA, "Public projection does not contain exactly 2,307 media routes");
+assert(media.length === EXPECTED_MEDIA, `Public projection does not contain exactly ${EXPECTED_MEDIA} media routes`);
 assert(new Set(media.map((item) => item.publicPath)).size === EXPECTED_MEDIA, "Public media routes are not unique");
 assert(media.filter((item) => item.contentType === "image/jpeg").length === EXPECTED_JPEGS, "Public JPEG count changed");
 assert(media.filter((item) => item.contentType === "video/mp4").length === EXPECTED_MP4S, "Public MP4 count changed");
@@ -145,7 +145,7 @@ for (const item of media) {
 }
 
 assert(linkedBytes === EXPECTED_MEDIA_BYTES, `Expected ${EXPECTED_MEDIA_BYTES} media bytes, got ${linkedBytes}`);
-assert(verifiedJunctions.size === EXPECTED_POSTS, "Expected 573 verified per-post media junctions");
+assert(verifiedJunctions.size === EXPECTED_POSTS, `Expected ${EXPECTED_POSTS} verified per-post media junctions`);
 console.log(
   `Prepared ${media.length} exact hardlinks from ${verifiedJunctions.size} verified junctions (${linkedBytes} bytes); largest ${maxFileBytes} bytes.`,
 );

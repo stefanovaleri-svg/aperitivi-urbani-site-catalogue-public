@@ -19,15 +19,21 @@ function collectKeys(value, keys = []) {
 
 test("publishes the exact complete-record projection", () => {
   assert.equal(data.schemaVersion, "aperitivi-public-catalog-v1");
+  assert.equal(data.creator.handle, "aperitivi_urbani");
+  assert.equal(data.creator.profileUrl, "https://www.instagram.com/aperitivi_urbani/");
   assert.equal(data.coverage.expectedPosts, 615);
   assert.equal(data.coverage.attemptedPosts, 615);
-  assert.equal(data.coverage.completePosts, 573);
-  assert.equal(data.coverage.excludedIncompleteRecords, 42);
-  assert.equal(data.venues.length, 327);
-  assert.equal(data.posts.length, 573);
-  assert.equal(data.listings.length, 573);
-  assert.equal(data.posts.reduce((sum, post) => sum + post.media.length, 0), 2307);
+  assert.equal(data.coverage.completePosts, 588);
+  assert.equal(data.coverage.excludedIncompleteRecords, 27);
+  assert.equal(data.coverage.venueCount, 334);
+  assert.equal(data.venues.length, 334);
+  assert.equal(data.posts.length, 588);
+  assert.equal(data.listings.length, 588);
+  assert.equal(data.posts.reduce((sum, post) => sum + post.media.length, 0), 2366);
   assert.equal(data.venues.filter((venue) => venue.coordinateStatus === "valid").length, 232);
+  assert.equal(data.venues.filter((venue) => venue.resolutionStatus === "resolved").length, 259);
+  assert.equal(data.venues.filter((venue) => venue.resolutionStatus === "candidate").length, 31);
+  assert.equal(data.venues.filter((venue) => venue.resolutionStatus === "unresolved").length, 44);
   const postIds = new Set(data.posts.map((post) => post.id));
   const venueIds = new Set(data.venues.map((venue) => venue.id));
   assert.equal(data.listings.every((listing) => postIds.has(listing.postId)), true);
@@ -65,26 +71,44 @@ test("contains every approved route but no private evidence fields", () => {
       }
     }
   }
-  assert.equal(postDirectories.size, 573);
-  assert.equal(routes.size, 2307);
-  assert.equal(jpegCount, 2069);
-  assert.equal(mp4Count, 238);
+  assert.equal(postDirectories.size, 588);
+  assert.equal(routes.size, 2366);
+  assert.equal(jpegCount, 2124);
+  assert.equal(mp4Count, 242);
   const keys = collectKeys(data).join("\n");
   for (const forbiddenKey of [
     /comment/i,
     /author_ref/i,
     /parent_comment/i,
     /archive/i,
-    /sha256/i,
+    /caption/i,
+    /collectedAt/i,
+    /databaseId/i,
+    /enrichedAt/i,
+    /evidence/i,
+    /hash/i,
+    /inventory/i,
     /localpath/i,
+    /ocr/i,
+    /placeId/i,
+    /publicationAllowed/i,
+    /receipt/i,
+    /revision/i,
     /rootmanifest/i,
+    /runId/i,
+    /run_id/i,
     /campaignmanifest/i,
+    /sourceMediaId/i,
+    /sourcePostId/i,
+    /sourceVersion/i,
   ]) {
     assert.doesNotMatch(keys, forbiddenKey);
   }
   for (const forbiddenValue of [
     /onedrive/i,
     /[A-Z]:\\/,
+    /sha256:/i,
+    /\d{8}T\d{6}Z--[a-f0-9]{12}/i,
   ]) {
     assert.doesNotMatch(serialized, forbiddenValue);
   }
@@ -93,7 +117,7 @@ test("contains every approved route but no private evidence fields", () => {
 test("records publication scope without licensing the source code", async () => {
   const authorization = JSON.parse(await readFile(new URL("../publication-authorization.json", import.meta.url), "utf8"));
   assert.equal(authorization.status, "authorized");
-  assert.equal(authorization.complete_posts, 573);
-  assert.equal(authorization.media_count, 2307);
-  assert.equal(authorization.excluded_incomplete_records, 42);
+  assert.equal(authorization.complete_posts, 588);
+  assert.equal(authorization.media_count, 2366);
+  assert.equal(authorization.excluded_incomplete_records, 27);
 });
